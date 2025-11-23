@@ -18,15 +18,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String emailOrPhone) throws UsernameNotFoundException {
         User user = userRepository.findByEmailOrPhone(emailOrPhone)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email or phone: " + emailOrPhone));
 
-        if (!user.isActive()) {
+         if (Boolean.FALSE.equals(user.getIsActive())){
             throw new UsernameNotFoundException("User account is deactivated");
-        }
+         }
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),

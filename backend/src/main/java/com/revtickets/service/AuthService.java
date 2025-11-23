@@ -74,21 +74,26 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+
+        String identifier = request.getEmailOrPhone();  // <- FIX
+
+
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmailOrPhone(),
-                        request.getPassword()
-                )
-        );
+            new UsernamePasswordAuthenticationToken(
+                    identifier,
+                    request.getPassword()
+            )
+    );
 
         String token = tokenProvider.generateToken(authentication);
+        System.out.println("Generated Token: " + token);
 
-        User user = userRepository.findByEmailOrPhone(request.getEmailOrPhone())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "email/phone", request.getEmailOrPhone()));
+        User user = userRepository.findByEmailOrPhone(identifier)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email/phone", identifier));
+        System.out.println("Authenticated User: " + user.getEmail());
 
-        // Log activity
         activityLogService.logUserLogin(user);
 
-        return new AuthResponse(token, UserResponse.fromEntity(user));
+    return new AuthResponse(token, UserResponse.fromEntity(user));
     }
 }

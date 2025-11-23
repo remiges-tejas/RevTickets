@@ -34,37 +34,75 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsService userDetailsService;
 
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    //     http
+    //             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+    //             .csrf(AbstractHttpConfigurer::disable)
+    //             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    //             .authorizeHttpRequests(auth -> auth
+    //                     Public endpoints
+    //                     .requestMatchers("/api/auth/**").permitAll()
+    //                     .requestMatchers("/api/movies/**").permitAll()
+    //                     .requestMatchers("/api/theaters/**").permitAll()
+    //                     .requestMatchers("/api/showtimes/**").permitAll()
+    //                     .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+
+                
+    //                     // WebSocket endpoint
+    //                     .requestMatchers("/ws/**").permitAll()
+
+    //                     // Swagger/OpenAPI
+    //                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+
+    //                     // Admin endpoints
+    //                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+    //                     // Authenticated endpoints
+    //                     .anyRequest().authenticated()
+    //             )
+    //             .authenticationProvider(authenticationProvider())
+    //             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+    //     return http.build();
+    // }
+
+
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/movies/**").permitAll()
-                        .requestMatchers("/api/theaters/**").permitAll()
-                        .requestMatchers("/api/showtimes/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                    // Public endpoints
+                    .requestMatchers("/api/auth/**").permitAll()   // login, register all open
+                    .requestMatchers("/api/movies/**").permitAll()
+                    .requestMatchers("/api/theaters/**").permitAll()
+                    .requestMatchers("/api/showtimes/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
 
-                        // WebSocket endpoint
-                        .requestMatchers("/ws/**").permitAll()
+                    // WebSocket
+                    .requestMatchers("/ws/**").permitAll()
 
-                        // Swagger/OpenAPI
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                    // Swagger
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
 
-                        // Admin endpoints
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    // Admin-only
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // Authenticated endpoints
-                        .anyRequest().authenticated()
-                )
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                    // Everything else must be authenticated
+                    .anyRequest().authenticated()
+            )
+            .authenticationProvider(authenticationProvider())
 
-        return http.build();
-    }
+            // 👇 Add JWT filter *before* UsernamePasswordAuthenticationFilter
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
