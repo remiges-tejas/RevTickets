@@ -1,0 +1,228 @@
+@if (isLoading()) {
+  <app-loader [overlay]="true" message="Loading movie details..." />
+} @else if (movie()) {
+  <!-- Banner Section -->
+  <section class="banner" [style.backgroundImage]="'url(' + movie()!.bannerUrl + ')'">
+    <div class="banner-overlay"></div>
+    <div class="banner-content container">
+      <div class="movie-poster">
+        <img [src]="movie()!.posterUrl" [alt]="movie()!.title" />
+      </div>
+      <div class="movie-info">
+        <h1>{{ movie()!.title }}</h1>
+
+        <div class="rating-section">
+          <app-star-rating [rating]="movie()!.rating" [readonly]="true" [showValue]="true" />
+          <span class="total-ratings">({{ movie()!.totalRatings | number }} ratings)</span>
+        </div>
+
+        <div class="meta-info">
+          <span>{{ formatDuration(movie()!.duration) }}</span>
+          <span class="dot"></span>
+          <span>{{ movie()!.genres.join(', ') }}</span>
+          <span class="dot"></span>
+          <span>{{ movie()!.certificate }}</span>
+          <span class="dot"></span>
+          <span>{{ movie()!.releaseDate | date: 'dd MMM yyyy' }}</span>
+        </div>
+
+        <div class="formats">
+          @for (format of movie()!.format; track format) {
+            <span class="format-badge">{{ format }}</span>
+          }
+        </div>
+
+        @if (movie()!.status === 'now_showing') {
+          <button class="btn-book" (click)="scrollToShowtimes()">
+            <span class="material-icons">confirmation_number</span>
+            Book Tickets
+          </button>
+        } @else {
+          <button class="btn-notify" disabled>
+            <span class="material-icons">notifications</span>
+            Coming {{ movie()!.releaseDate | date: 'MMM dd' }}
+          </button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Sections -->
+  <main class="movie-content">
+    <div class="container">
+      <!-- About Section -->
+      <section class="content-section">
+        <h2>About the Movie</h2>
+        <p class="description">{{ movie()!.description }}</p>
+      </section>
+
+      <!-- Cast Section -->
+      <section class="content-section">
+        <h2>Cast</h2>
+        <div class="cast-grid">
+          @for (member of movie()!.cast; track member.name) {
+            <div class="cast-card">
+              <div class="cast-avatar">
+                <span class="material-icons">person</span>
+              </div>
+              <span class="cast-name">{{ member.name }}</span>
+              <span class="cast-role">{{ member.role }}</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Trailer Section -->
+      @if (movie()?.trailerUrl) {
+        <section class="content-section">
+          <h2>Trailer</h2>
+          <div class="trailer-wrapper">
+            <iframe
+              [src]="movie()!.trailerUrl! | safeUrl"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </section>
+      }
+
+      <!-- Showtimes Section -->
+      @if (movie()!.status === 'now_showing') {
+        <section id="showtimes" class="content-section showtimes-section">
+          <h2>Select Showtime</h2>
+
+          <!-- Date Selector -->
+          <div class="date-selector">
+            @for (date of availableDates; track date) {
+              <button
+                class="date-btn"
+                [class.active]="date.toDateString() === selectedDate().toDateString()"
+                (click)="selectDate(date)"
+              >
+                <span class="day">{{ formatDate(date).split(' ')[0] }}</span>
+                <span class="date">{{ date.getDate() }}</span>
+              </button>
+            }
+          </div>
+
+          <!-- Shows by Theater -->
+          @if (getShowsByTheater().length > 0) {
+            <div class="theaters-list">
+              @for (group of getShowsByTheater(); track group.theater.id) {
+                <div class="theater-card">
+                  <div class="theater-info">
+                    <h3>{{ group.theater.name }}</h3>
+                    <span class="location">{{ group.theater.location }}</span>
+                    <div class="amenities">
+                      @for (amenity of group.theater.amenities; track amenity) {
+                        <span class="amenity">{{ amenity }}</span>
+                      }
+                    </div>
+                  </div>
+                  <div class="show-times">
+                    @for (show of group.shows; track show.id) {
+                      <button
+                        class="show-btn"
+                        [class]="getShowStatusClass(show)"
+                        (click)="selectShow(show)"
+                        [disabled]="show.status === 'sold_out'"
+                      >
+                        <span class="time">{{ show.showTime }}</span>
+                        <span class="format">{{ show.format }}</span>
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="no-shows">
+              <span class="material-icons">event_busy</span>
+              <p>No shows available for the selected date</p>
+            </div>
+          }
+
+          <!-- Show Legend -->
+          <div class="show-legend">
+            <span class="legend-item"><span class="dot available"></span> Available</span>
+            <span class="legend-item"><span class="dot filling-fast"></span> Filling Fast</span>
+            <span class="legend-item"><span class="dot almost-full"></span> Almost Full</span>
+            <span class="legend-item"><span class="dot sold-out"></span> Sold Out</span>
+          </div>
+        </section>
+      }
+
+      <!-- Reviews Section -->
+      <section class="content-section reviews-section">
+        <div class="section-header">
+          <h2>Reviews</h2>
+          <button class="btn-write-review" (click)="toggleReviewForm()">
+            <span class="material-icons">edit</span>
+            Write a Review
+          </button>
+        </div>
+
+        <!-- Review Form -->
+        @if (showReviewForm()) {
+          <div class="review-form">
+            <div class="form-group">
+              <label>Your Rating</label>
+              <app-star-rating [(rating)]="newReviewRating" />
+            </div>
+            <div class="form-group">
+              <label>Title (Optional)</label>
+              <input type="text" [(ngModel)]="newReviewTitle" placeholder="Sum it up in a few words" />
+            </div>
+            <div class="form-group">
+              <label>Your Review</label>
+              <textarea
+                [(ngModel)]="newReviewContent"
+                rows="4"
+                placeholder="Tell us what you thought about the movie..."
+              ></textarea>
+            </div>
+            <div class="form-actions">
+              <button class="btn-cancel" (click)="showReviewForm.set(false)">Cancel</button>
+              <button class="btn-submit" (click)="submitReview()">Submit Review</button>
+            </div>
+          </div>
+        }
+
+        <!-- Reviews List -->
+        @if (reviews().length > 0) {
+          <div class="reviews-list">
+            @for (review of reviews(); track review.id) {
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <span class="reviewer-avatar">{{ review.userName.charAt(0) }}</span>
+                    <div>
+                      <span class="reviewer-name">{{ review.userName }}</span>
+                      <span class="review-date">{{ review.createdAt | date: 'dd MMM yyyy' }}</span>
+                    </div>
+                  </div>
+                  <app-star-rating [rating]="review.rating" [readonly]="true" />
+                </div>
+                @if (review.title) {
+                  <h4 class="review-title">{{ review.title }}</h4>
+                }
+                <p class="review-content">{{ review.content }}</p>
+                <div class="review-actions">
+                  <button class="like-btn" [class.liked]="review.isLiked" (click)="toggleLike(review)">
+                    <span class="material-icons">{{ review.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}</span>
+                    {{ review.likes }}
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="no-reviews">
+            <span class="material-icons">rate_review</span>
+            <p>No reviews yet. Be the first to review!</p>
+          </div>
+        }
+      </section>
+    </div>
+  </main>
+}

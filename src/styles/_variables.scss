@@ -1,0 +1,101 @@
+// Color Palette
+$primary: #e50914;
+$primary-dark: #b2070f;
+$primary-light: #ff4d57;
+
+$secondary: #0071eb;
+$secondary-dark: #0056b3;
+
+$background-dark: #141414;
+$background-medium: #1f1f1f;
+$background-light: #2f2f2f;
+$background-card: #181818;
+
+$text-primary: #ffffff;
+$text-secondary: #b3b3b3;
+$text-muted: #757575;
+
+$success: #46d369;
+$warning: #f5c518;
+$error: #e50914;
+$info: #0071eb;
+
+// Seat Colors
+$seat-available: #1a5d1a;
+$seat-selected: #e50914;
+$seat-booked: #404040;
+$seat-premium: #ffd700;
+$seat-executive: #c0c0c0;
+$seat-normal: #cd7f32;
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+$gradient-dark: linear-gradient(180deg, $background-dark 0%, $background-medium 100%);
+
+// Typography
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.5rem;
+$font-size-3xl: 2rem;
+$font-size-4xl: 2.5rem;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+$spacing-3xl: 4rem;
+
+// Border Radius
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-full: 9999px;
+
+// Shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.4);
+
+// Transitions
+$transition-fast: 150ms ease;
+$transition-normal: 300ms ease;
+$transition-slow: 500ms ease;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// Z-index
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-fixed: 300;
+$z-modal-backdrop: 400;
+$z-modal: 500;
+$z-popover: 600;
+$z-tooltip: 700;
+$z-toast: 800;
+
+// Layout
+$header-height: 64px;
+$footer-height: 200px;
+$sidebar-width: 280px;
+$container-max-width: 1400px;

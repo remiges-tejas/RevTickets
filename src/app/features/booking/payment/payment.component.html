@@ -1,0 +1,188 @@
+@if (isLoading()) {
+  <app-loader [overlay]="true" message="Loading payment page..." />
+}
+
+@if (isProcessing()) {
+  <app-loader [overlay]="true" message="Processing payment..." />
+}
+
+@if (booking()) {
+  <div class="payment-page">
+    <div class="container">
+      <h1>Payment</h1>
+
+      <div class="payment-layout">
+        <!-- Payment Methods -->
+        <div class="payment-methods">
+          <!-- Method Selection -->
+          <div class="method-tabs">
+            <button
+              class="method-tab"
+              [class.active]="selectedMethod() === 'card'"
+              (click)="selectMethod('card')"
+            >
+              <span class="material-icons">credit_card</span>
+              Card
+            </button>
+            <button
+              class="method-tab"
+              [class.active]="selectedMethod() === 'upi'"
+              (click)="selectMethod('upi')"
+            >
+              <span class="material-icons">account_balance</span>
+              UPI
+            </button>
+            <button
+              class="method-tab"
+              [class.active]="selectedMethod() === 'netbanking'"
+              (click)="selectMethod('netbanking')"
+            >
+              <span class="material-icons">language</span>
+              Net Banking
+            </button>
+          </div>
+
+          <!-- Card Form -->
+          @if (selectedMethod() === 'card') {
+            <div class="payment-form">
+              <form [formGroup]="cardForm">
+                <div class="form-group">
+                  <label>Card Number</label>
+                  <input
+                    type="text"
+                    formControlName="cardNumber"
+                    placeholder="1234 5678 9012 3456"
+                    (input)="formatCardNumber($event)"
+                    maxlength="16"
+                  />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input
+                      type="text"
+                      formControlName="expiryDate"
+                      placeholder="MM/YY"
+                      (input)="formatExpiry($event)"
+                      maxlength="5"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>CVV</label>
+                    <input
+                      type="password"
+                      formControlName="cvv"
+                      placeholder="***"
+                      maxlength="3"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Name on Card</label>
+                  <input
+                    type="text"
+                    formControlName="cardName"
+                    placeholder="Enter name as on card"
+                  />
+                </div>
+              </form>
+
+              <div class="secure-badge">
+                <span class="material-icons">lock</span>
+                Your payment is secured with 256-bit encryption
+              </div>
+            </div>
+          }
+
+          <!-- UPI Form -->
+          @if (selectedMethod() === 'upi') {
+            <div class="payment-form">
+              <form [formGroup]="upiForm">
+                <div class="form-group">
+                  <label>UPI ID</label>
+                  <input
+                    type="text"
+                    formControlName="upiId"
+                    placeholder="yourname@upi"
+                  />
+                </div>
+              </form>
+
+              <div class="upi-apps">
+                <p>Or pay using</p>
+                <div class="app-icons">
+                  <button class="app-btn">GPay</button>
+                  <button class="app-btn">PhonePe</button>
+                  <button class="app-btn">Paytm</button>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Net Banking -->
+          @if (selectedMethod() === 'netbanking') {
+            <div class="payment-form">
+              <div class="bank-list">
+                <p>Select your bank</p>
+                <div class="banks">
+                  <button class="bank-btn">HDFC Bank</button>
+                  <button class="bank-btn">ICICI Bank</button>
+                  <button class="bank-btn">SBI</button>
+                  <button class="bank-btn">Axis Bank</button>
+                  <button class="bank-btn">Kotak</button>
+                  <button class="bank-btn">Other Banks</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <div class="summary-card">
+            <h3>Order Summary</h3>
+
+            <div class="order-details">
+              <div class="detail-row">
+                <span>Booking ID</span>
+                <span>{{ booking()!.bookingNumber }}</span>
+              </div>
+              <div class="detail-row">
+                <span>Tickets</span>
+                <span>{{ booking()!.totalSeats }}</span>
+              </div>
+            </div>
+
+            <div class="price-breakdown">
+              <div class="price-row">
+                <span>Subtotal</span>
+                <span>₹{{ booking()!.baseAmount.toFixed(2) }}</span>
+              </div>
+              <div class="price-row">
+                <span>Convenience Fee</span>
+                <span>₹{{ booking()!.convenienceFee.toFixed(2) }}</span>
+              </div>
+              <div class="price-row">
+                <span>Taxes</span>
+                <span>₹{{ booking()!.taxes.toFixed(2) }}</span>
+              </div>
+            </div>
+
+            <div class="total-row">
+              <span>Total</span>
+              <span>₹{{ booking()!.totalAmount.toFixed(2) }}</span>
+            </div>
+
+            <button
+              class="btn-pay"
+              (click)="processPayment()"
+              [disabled]="isProcessing()"
+            >
+              Pay ₹{{ booking()!.totalAmount.toFixed(2) }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

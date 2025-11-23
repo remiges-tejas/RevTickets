@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ide__getDiagnostics",
+      "Bash(del \"C:\\Users\\subod\\RevTickets\\backend\\src\\main\\resources\\application.yml\")",
+      "WebFetch(domain:quickshow.vercel.app)",
+      "Bash(mvn spring-boot:run:*)",
+      "Bash(npm start)",
+      "Bash(npm start:*)",
+      "Bash(powershell -Command:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

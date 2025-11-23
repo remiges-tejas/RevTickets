@@ -1,0 +1,354 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.seat-selection-page {
+  min-height: calc(100vh - $header-height);
+  background: $background-dark;
+}
+
+// Show Info Header
+.show-info {
+  background: $background-medium;
+  padding: $spacing-lg 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .info-content {
+    h1 {
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-sm;
+    }
+
+    .show-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: $spacing-md;
+      color: $text-secondary;
+      font-size: $font-size-sm;
+
+      .dot {
+        width: 4px;
+        height: 4px;
+        background: $text-muted;
+        border-radius: 50%;
+      }
+
+      .format-badge {
+        padding: $spacing-xs $spacing-sm;
+        background: $primary;
+        border-radius: $radius-sm;
+        font-size: $font-size-xs;
+        color: $text-primary;
+      }
+    }
+  }
+}
+
+// Main Content
+.selection-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-2xl;
+  padding: $spacing-2xl 0;
+
+  @include lg {
+    grid-template-columns: 1fr 350px;
+  }
+}
+
+// Seat Layout
+.seat-layout-wrapper {
+  background: $background-medium;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  overflow-x: auto;
+}
+
+.screen-container {
+  margin-bottom: $spacing-2xl;
+  text-align: center;
+}
+
+.screen {
+  display: inline-block;
+  width: 80%;
+  max-width: 500px;
+  padding: $spacing-sm;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: $radius-sm $radius-sm 50% 50%;
+  text-align: center;
+
+  span {
+    font-size: $font-size-xs;
+    color: $text-muted;
+    letter-spacing: 2px;
+  }
+}
+
+.seat-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  align-items: center;
+  margin-bottom: $spacing-2xl;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  .row-label {
+    width: 20px;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    color: $text-muted;
+    text-align: center;
+  }
+
+  .seats {
+    display: flex;
+    gap: $spacing-xs;
+  }
+}
+
+.seat {
+  @include flex-center;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
+  font-size: 10px;
+  font-weight: $font-weight-medium;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  @include md {
+    width: 32px;
+    height: 32px;
+    font-size: $font-size-xs;
+  }
+
+  &.available {
+    background: $seat-available;
+    color: $text-primary;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba($seat-available, 0.5);
+    }
+  }
+
+  &.selected {
+    background: $seat-selected;
+    color: $text-primary;
+    transform: scale(1.05);
+  }
+
+  &.booked {
+    background: $seat-booked;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+
+  // Category colors
+  &.recliner {
+    &.available {
+      background: darken($seat-premium, 20%);
+    }
+  }
+
+  &.premium {
+    &.available {
+      background: darken($seat-premium, 30%);
+    }
+  }
+}
+
+// Legend
+.seat-legend {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-xl;
+  margin-bottom: $spacing-lg;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+  color: $text-secondary;
+
+  .seat-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: $radius-sm;
+
+    &.available {
+      background: $seat-available;
+    }
+
+    &.selected {
+      background: $seat-selected;
+    }
+
+    &.booked {
+      background: $seat-booked;
+    }
+  }
+}
+
+.category-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+  color: $text-secondary;
+
+  .category-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+}
+
+// Summary
+.selection-summary {
+  @include lg {
+    position: sticky;
+    top: calc($header-height + $spacing-xl);
+    height: fit-content;
+  }
+}
+
+.summary-card {
+  background: $background-medium;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+
+  h3 {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-xl;
+  }
+}
+
+.selected-seats {
+  margin-bottom: $spacing-xl;
+
+  label {
+    display: block;
+    font-size: $font-size-sm;
+    color: $text-muted;
+    margin-bottom: $spacing-md;
+  }
+
+  .seats-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  .seat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    background: $background-light;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+
+    .seat-price {
+      font-size: $font-size-xs;
+      color: $text-muted;
+    }
+  }
+}
+
+.summary-breakdown {
+  padding: $spacing-lg 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .summary-row {
+    @include flex-between;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+  }
+}
+
+.summary-total {
+  @include flex-between;
+  padding: $spacing-lg 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+}
+
+.btn-proceed {
+  width: 100%;
+  padding: $spacing-md;
+  background: $primary;
+  border: none;
+  border-radius: $radius-md;
+  color: $text-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  @include flex-center;
+  gap: $spacing-sm;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+.no-selection {
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $text-muted;
+
+  .material-icons {
+    font-size: 48px;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-sm;
+  }
+
+  .hint {
+    font-size: $font-size-sm;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

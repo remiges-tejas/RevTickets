@@ -1,0 +1,233 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.auth-page {
+  min-height: calc(100vh - $header-height);
+  @include flex-center;
+  padding: $spacing-xl;
+  background: $background-dark;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-card {
+  background: $background-medium;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  box-shadow: $shadow-xl;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+
+  h1 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+.demo-credentials {
+  background: rgba($primary, 0.1);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-xl;
+
+  p {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin: 0 0 $spacing-sm;
+  }
+
+  .demo-buttons {
+    display: flex;
+    gap: $spacing-sm;
+  }
+
+  .demo-btn {
+    flex: 1;
+    padding: $spacing-sm;
+    background: $background-light;
+    border: none;
+    border-radius: $radius-sm;
+    color: $text-primary;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    transition: background $transition-fast;
+
+    &:hover {
+      background: $primary;
+    }
+  }
+}
+
+.auth-form {
+  .form-group {
+    margin-bottom: $spacing-lg;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-secondary;
+  }
+
+  .input-wrapper {
+    position: relative;
+
+    .input-icon {
+      position: absolute;
+      left: $spacing-md;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-muted;
+      font-size: 20px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: $spacing-md $spacing-md $spacing-md 48px;
+      background: $background-light;
+      border: 2px solid transparent;
+      border-radius: $radius-md;
+      color: $text-primary;
+      font-size: $font-size-base;
+      outline: none;
+      transition: all $transition-fast;
+
+      &::placeholder {
+        color: $text-muted;
+      }
+
+      &:focus {
+        border-color: $primary;
+      }
+
+      &.error {
+        border-color: $error;
+      }
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: $spacing-md;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: $text-muted;
+      cursor: pointer;
+      padding: $spacing-xs;
+
+      &:hover {
+        color: $text-primary;
+      }
+    }
+  }
+
+  .form-error {
+    display: block;
+    margin-top: $spacing-xs;
+    font-size: $font-size-sm;
+    color: $error;
+  }
+}
+
+.form-extras {
+  @include flex-between;
+  margin-bottom: $spacing-xl;
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: $primary;
+    }
+  }
+
+  .forgot-link {
+    font-size: $font-size-sm;
+    color: $primary;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.submit-btn {
+  width: 100%;
+  padding: $spacing-md;
+  background: $primary;
+  border: none;
+  border-radius: $radius-md;
+  color: $text-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+  @include flex-center;
+  gap: $spacing-sm;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: $spacing-xl;
+
+  p {
+    color: $text-muted;
+    font-size: $font-size-sm;
+    margin: 0;
+
+    a {
+      color: $primary;
+      font-weight: $font-weight-medium;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

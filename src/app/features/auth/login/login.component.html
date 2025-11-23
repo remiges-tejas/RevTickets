@@ -1,0 +1,117 @@
+<div class="auth-page">
+  <div class="auth-container">
+    <div class="auth-card">
+      <!-- Header -->
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to continue to RevTickets</p>
+      </div>
+
+      <!-- Demo Credentials -->
+      <div class="demo-credentials">
+        <p>Demo Credentials:</p>
+        <div class="demo-buttons">
+          <button type="button" (click)="fillDemoCredentials('user')" class="demo-btn">
+            User Login
+          </button>
+          <button type="button" (click)="fillDemoCredentials('admin')" class="demo-btn">
+            Admin Login
+          </button>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon material-icons">email</span>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              class="form-input"
+              [class.error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+            />
+          </div>
+          @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors) {
+            <span class="form-error">
+              @if (loginForm.get('email')?.errors?.['required']) {
+                Email is required
+              } @else if (loginForm.get('email')?.errors?.['email']) {
+                Please enter a valid email
+              }
+            </span>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon material-icons">lock</span>
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              class="form-input"
+              [class.error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePassword()"
+            >
+              <span class="material-icons">
+                {{ showPassword() ? 'visibility_off' : 'visibility' }}
+              </span>
+            </button>
+          </div>
+          @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors) {
+            <span class="form-error">
+              @if (loginForm.get('password')?.errors?.['required']) {
+                Password is required
+              } @else if (loginForm.get('password')?.errors?.['minlength']) {
+                Password must be at least 6 characters
+              }
+            </span>
+          }
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-extras">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="rememberMe" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner"></span>
+            Signing in...
+          } @else {
+            Sign In
+          }
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <div class="auth-footer">
+        <p>
+          Don't have an account?
+          <a routerLink="/register">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

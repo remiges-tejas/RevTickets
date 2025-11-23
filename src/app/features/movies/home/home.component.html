@@ -1,0 +1,140 @@
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-backdrop"></div>
+  <div class="hero-content container">
+    @if (featuredMovie()) {
+      <div class="hero-poster">
+        <img [src]="featuredMovie()!.posterUrl" [alt]="featuredMovie()!.title" />
+        <div class="poster-glow"></div>
+      </div>
+      <div class="hero-info">
+        <span class="hero-badge">
+          <span class="material-icons">local_fire_department</span>
+          Featured
+        </span>
+        <h1>{{ featuredMovie()!.title }}</h1>
+        <div class="hero-meta">
+          <span class="rating">
+            <span class="material-icons">star</span>
+            {{ featuredMovie()!.rating.toFixed(1) }}
+          </span>
+          <span class="meta-item">
+            <span class="material-icons">schedule</span>
+            {{ featuredMovie()!.duration }} min
+          </span>
+          <span class="meta-item">
+            <span class="material-icons">theaters</span>
+            {{ featuredMovie()!.certificate }}
+          </span>
+        </div>
+        <div class="hero-genres">
+          @for (genre of featuredMovie()!.genres; track genre) {
+            <span class="genre-tag">{{ genre }}</span>
+          }
+        </div>
+        <p class="hero-description">{{ featuredMovie()!.description }}</p>
+        <div class="hero-actions">
+          <a [routerLink]="['/movies', featuredMovie()!.id]" class="btn-book">
+            <span class="material-icons">confirmation_number</span>
+            Book Tickets
+          </a>
+          @if (featuredMovie()!.trailerUrl) {
+            <button class="btn-trailer">
+              <span class="material-icons">play_circle</span>
+              Watch Trailer
+            </button>
+          }
+        </div>
+      </div>
+    } @else {
+      <!-- Loading state -->
+      <div class="hero-loading">
+        <div class="hero-poster-skeleton"></div>
+        <div class="hero-info-skeleton">
+          <div class="skeleton-badge"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-meta"></div>
+          <div class="skeleton-description"></div>
+          <div class="skeleton-buttons"></div>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<main class="home-content">
+  <!-- Now Showing Section -->
+  <section class="movie-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Now Showing</h2>
+        <a routerLink="/movies" [queryParams]="{status: 'now_showing'}" class="view-all">
+          View All
+          <span class="material-icons">arrow_forward</span>
+        </a>
+      </div>
+
+      @if (isLoading()) {
+        <div class="movie-grid">
+          @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+            <div class="skeleton-card">
+              <app-skeleton width="100%" height="300px" borderRadius="12px" />
+              <app-skeleton width="80%" height="20px" borderRadius="4px" />
+              <app-skeleton width="60%" height="16px" borderRadius="4px" />
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="movie-grid">
+          @for (movie of nowShowing(); track movie.id) {
+            <app-movie-card [movie]="movie" />
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Coming Soon Section -->
+  <section class="movie-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Coming Soon</h2>
+        <a routerLink="/movies" [queryParams]="{status: 'coming_soon'}" class="view-all">
+          View All
+          <span class="material-icons">arrow_forward</span>
+        </a>
+      </div>
+
+      @if (isLoading()) {
+        <div class="movie-grid">
+          @for (i of [1, 2, 3, 4]; track i) {
+            <div class="skeleton-card">
+              <app-skeleton width="100%" height="300px" borderRadius="12px" />
+              <app-skeleton width="80%" height="20px" borderRadius="4px" />
+              <app-skeleton width="60%" height="16px" borderRadius="4px" />
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="movie-grid">
+          @for (movie of comingSoon(); track movie.id) {
+            <app-movie-card [movie]="movie" />
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Promo Banner -->
+  <section class="promo-section">
+    <div class="container">
+      <div class="promo-banner">
+        <div class="promo-content">
+          <h3>Weekend Special Offer</h3>
+          <p>Get 20% off on all bookings. Use code: WEEKEND20</p>
+          <button class="btn-primary">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

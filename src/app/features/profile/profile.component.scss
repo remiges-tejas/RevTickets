@@ -1,0 +1,348 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.profile-page {
+  padding: $spacing-2xl 0;
+  min-height: calc(100vh - $header-height);
+
+  h1 {
+    font-size: $font-size-2xl;
+    margin-bottom: $spacing-xl;
+  }
+}
+
+// Tabs
+.tabs {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-2xl;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: $spacing-md;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-md $spacing-lg;
+    background: none;
+    border: none;
+    color: $text-muted;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    border-radius: $radius-md $radius-md 0 0;
+    transition: all $transition-fast;
+
+    &:hover {
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.active {
+      color: $primary;
+      background: rgba($primary, 0.1);
+    }
+
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+}
+
+// Profile Card
+.profile-card {
+  background: $background-medium;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-xl;
+
+  .card-header {
+    @include flex-between;
+    margin-bottom: $spacing-xl;
+
+    h2 {
+      font-size: $font-size-lg;
+    }
+
+    .btn-edit {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+      padding: $spacing-sm $spacing-md;
+      background: $background-light;
+      border: none;
+      border-radius: $radius-md;
+      color: $text-secondary;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: $text-primary;
+      }
+
+      .material-icons {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-lg;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group {
+  label {
+    display: block;
+    font-size: $font-size-sm;
+    color: $text-muted;
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    font-weight: $font-weight-medium;
+    margin: 0;
+  }
+
+  input {
+    width: 100%;
+    padding: $spacing-md;
+    background: $background-light;
+    border: 2px solid transparent;
+    border-radius: $radius-md;
+    color: $text-primary;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-md;
+  margin-top: $spacing-xl;
+  padding-top: $spacing-xl;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .btn-cancel,
+  .btn-save {
+    padding: $spacing-sm $spacing-xl;
+    border-radius: $radius-md;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+  }
+
+  .btn-cancel {
+    background: transparent;
+    border: 1px solid $text-muted;
+    color: $text-secondary;
+
+    &:hover {
+      border-color: $text-primary;
+      color: $text-primary;
+    }
+  }
+
+  .btn-save {
+    background: $primary;
+    border: none;
+    color: $text-primary;
+
+    &:hover:not(:disabled) {
+      background: $primary-dark;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Preferences
+.preferences {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  .pref-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .material-icons {
+      color: $primary;
+    }
+
+    div {
+      strong {
+        display: block;
+        font-size: $font-size-sm;
+        margin-bottom: $spacing-xs;
+      }
+
+      span {
+        font-size: $font-size-sm;
+        color: $text-muted;
+      }
+    }
+  }
+}
+
+// Bookings & Payments Lists
+.bookings-list,
+.payments-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.booking-card,
+.payment-card {
+  background: $background-medium;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+}
+
+.booking-header,
+.payment-header {
+  @include flex-between;
+  margin-bottom: $spacing-lg;
+
+  .booking-id,
+  .transaction-id {
+    font-weight: $font-weight-bold;
+    font-family: monospace;
+  }
+
+  .status {
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+
+    &.status-confirmed,
+    &.status-success {
+      background: rgba($success, 0.2);
+      color: $success;
+    }
+
+    &.status-cancelled,
+    &.status-failed {
+      background: rgba($error, 0.2);
+      color: $error;
+    }
+
+    &.status-pending,
+    &.status-processing {
+      background: rgba($warning, 0.2);
+      color: $warning;
+    }
+
+    &.status-completed {
+      background: rgba($info, 0.2);
+      color: $info;
+    }
+
+    &.status-refunded {
+      background: rgba($info, 0.2);
+      color: $info;
+    }
+  }
+}
+
+.booking-details,
+.payment-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-lg;
+
+  .detail {
+    .label {
+      display: block;
+      font-size: $font-size-xs;
+      color: $text-muted;
+      margin-bottom: $spacing-xs;
+    }
+
+    .value {
+      font-weight: $font-weight-medium;
+    }
+
+    &.amount .value {
+      color: $success;
+    }
+  }
+}
+
+.booking-actions {
+  margin-top: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .btn-view {
+    padding: $spacing-sm $spacing-md;
+    background: $background-light;
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-size: $font-size-sm;
+    text-decoration: none;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+.refund-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-md;
+  padding: $spacing-sm $spacing-md;
+  background: rgba($info, 0.1);
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $info;
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: $spacing-3xl;
+  background: $background-medium;
+  border-radius: $radius-xl;
+
+  .material-icons {
+    font-size: 64px;
+    color: $text-muted;
+    margin-bottom: $spacing-lg;
+  }
+
+  h3 {
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    color: $text-muted;
+    margin-bottom: $spacing-xl;
+  }
+
+  .btn-primary {
+    @include button-primary;
+    text-decoration: none;
+  }
+}

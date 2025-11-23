@@ -1,0 +1,615 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+// Banner
+.banner {
+  position: relative;
+  min-height: 50vh;
+  background-size: cover;
+  background-position: center top;
+  padding: $spacing-3xl 0;
+
+  @include lg {
+    min-height: 60vh;
+  }
+
+  .banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      $background-dark 0%,
+      rgba($background-dark, 0.9) 40%,
+      rgba($background-dark, 0.7) 100%
+    );
+  }
+
+  .banner-content {
+    position: relative;
+    display: flex;
+    gap: $spacing-2xl;
+    align-items: flex-end;
+  }
+
+  .movie-poster {
+    display: none;
+
+    @include md {
+      display: block;
+      flex-shrink: 0;
+      width: 250px;
+
+      img {
+        width: 100%;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-xl;
+      }
+    }
+
+    @include lg {
+      width: 300px;
+    }
+  }
+
+  .movie-info {
+    flex: 1;
+
+    h1 {
+      font-size: $font-size-2xl;
+      margin-bottom: $spacing-md;
+
+      @include lg {
+        font-size: $font-size-3xl;
+      }
+    }
+
+    .rating-section {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      margin-bottom: $spacing-md;
+
+      .total-ratings {
+        color: $text-muted;
+        font-size: $font-size-sm;
+      }
+    }
+
+    .meta-info {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: $spacing-md;
+      margin-bottom: $spacing-md;
+      color: $text-secondary;
+
+      .dot {
+        width: 4px;
+        height: 4px;
+        background: $text-muted;
+        border-radius: 50%;
+      }
+    }
+
+    .formats {
+      display: flex;
+      gap: $spacing-sm;
+      margin-bottom: $spacing-xl;
+
+      .format-badge {
+        padding: $spacing-xs $spacing-md;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: $radius-sm;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+      }
+    }
+
+    .btn-book,
+    .btn-notify {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-md $spacing-xl;
+      border-radius: $radius-md;
+      font-weight: $font-weight-semibold;
+      cursor: pointer;
+      transition: all $transition-fast;
+
+      .material-icons {
+        font-size: 20px;
+      }
+    }
+
+    .btn-book {
+      background: $primary;
+      color: $text-primary;
+      border: none;
+      text-decoration: none;
+
+      &:hover {
+        background: $primary-dark;
+      }
+    }
+
+    .btn-notify {
+      background: $background-light;
+      color: $text-secondary;
+      border: none;
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Content
+.movie-content {
+  padding: $spacing-3xl 0;
+}
+
+.content-section {
+  margin-bottom: $spacing-3xl;
+
+  h2 {
+    font-size: $font-size-xl;
+    margin-bottom: $spacing-lg;
+  }
+
+  .description {
+    color: $text-secondary;
+    line-height: 1.8;
+  }
+}
+
+// Cast
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+
+  @include sm {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include md {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.cast-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .cast-avatar {
+    @include flex-center;
+    width: 80px;
+    height: 80px;
+    background: $background-light;
+    border-radius: 50%;
+    margin-bottom: $spacing-sm;
+
+    .material-icons {
+      font-size: 40px;
+      color: $text-muted;
+    }
+  }
+
+  .cast-name {
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+  }
+
+  .cast-role {
+    font-size: $font-size-xs;
+    color: $text-muted;
+  }
+}
+
+// Trailer
+.trailer-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Showtimes
+.showtimes-section {
+  background: $background-medium;
+  padding: $spacing-2xl;
+  border-radius: $radius-xl;
+}
+
+.date-selector {
+  display: flex;
+  gap: $spacing-sm;
+  overflow-x: auto;
+  padding-bottom: $spacing-md;
+  margin-bottom: $spacing-xl;
+
+  @include hide-scrollbar;
+
+  .date-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-md;
+    background: $background-light;
+    border: 2px solid transparent;
+    border-radius: $radius-md;
+    min-width: 70px;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &.active {
+      border-color: $primary;
+      background: rgba($primary, 0.1);
+    }
+
+    .day {
+      font-size: $font-size-xs;
+      color: $text-muted;
+      text-transform: uppercase;
+    }
+
+    .date {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
+
+.theaters-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.theater-card {
+  background: $background-dark;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+
+  .theater-info {
+    margin-bottom: $spacing-md;
+
+    h3 {
+      font-size: $font-size-base;
+      margin-bottom: $spacing-xs;
+    }
+
+    .location {
+      font-size: $font-size-sm;
+      color: $text-muted;
+    }
+
+    .amenities {
+      display: flex;
+      gap: $spacing-sm;
+      margin-top: $spacing-sm;
+
+      .amenity {
+        font-size: $font-size-xs;
+        color: $text-muted;
+        padding: $spacing-xs $spacing-sm;
+        background: $background-light;
+        border-radius: $radius-sm;
+      }
+    }
+  }
+
+  .show-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  .show-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-sm $spacing-md;
+    background: transparent;
+    border: 1px solid $success;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    .time {
+      font-weight: $font-weight-semibold;
+      color: $success;
+    }
+
+    .format {
+      font-size: $font-size-xs;
+      color: $text-muted;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba($success, 0.1);
+    }
+
+    &.filling-fast {
+      border-color: $warning;
+
+      .time {
+        color: $warning;
+      }
+    }
+
+    &.almost-full {
+      border-color: #ff7043;
+
+      .time {
+        color: #ff7043;
+      }
+    }
+
+    &.sold-out {
+      border-color: $text-muted;
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      .time {
+        color: $text-muted;
+      }
+    }
+  }
+}
+
+.no-shows {
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $text-muted;
+
+  .material-icons {
+    font-size: 48px;
+    margin-bottom: $spacing-md;
+  }
+}
+
+.show-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-lg;
+  margin-top: $spacing-xl;
+  padding-top: $spacing-lg;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $font-size-sm;
+    color: $text-muted;
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+
+      &.available {
+        background: $success;
+      }
+
+      &.filling-fast {
+        background: $warning;
+      }
+
+      &.almost-full {
+        background: #ff7043;
+      }
+
+      &.sold-out {
+        background: $text-muted;
+      }
+    }
+  }
+}
+
+// Reviews
+.reviews-section {
+  .section-header {
+    @include flex-between;
+    margin-bottom: $spacing-xl;
+
+    .btn-write-review {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-sm $spacing-md;
+      background: $primary;
+      border: none;
+      border-radius: $radius-md;
+      color: $text-primary;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+
+      &:hover {
+        background: $primary-dark;
+      }
+
+      .material-icons {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.review-form {
+  background: $background-medium;
+  padding: $spacing-xl;
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-xl;
+
+  .form-group {
+    margin-bottom: $spacing-lg;
+
+    label {
+      display: block;
+      margin-bottom: $spacing-sm;
+      font-weight: $font-weight-medium;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: $spacing-md;
+      background: $background-light;
+      border: none;
+      border-radius: $radius-md;
+      color: $text-primary;
+      font-family: inherit;
+
+      &::placeholder {
+        color: $text-muted;
+      }
+
+      &:focus {
+        outline: 2px solid $primary;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+
+    .btn-cancel,
+    .btn-submit {
+      padding: $spacing-sm $spacing-xl;
+      border-radius: $radius-md;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid $text-muted;
+      color: $text-secondary;
+
+      &:hover {
+        border-color: $text-primary;
+        color: $text-primary;
+      }
+    }
+
+    .btn-submit {
+      background: $primary;
+      border: none;
+      color: $text-primary;
+
+      &:hover {
+        background: $primary-dark;
+      }
+    }
+  }
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.review-card {
+  background: $background-medium;
+  padding: $spacing-lg;
+  border-radius: $radius-lg;
+
+  .review-header {
+    @include flex-between;
+    margin-bottom: $spacing-md;
+
+    .reviewer-info {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+
+      .reviewer-avatar {
+        @include flex-center;
+        width: 40px;
+        height: 40px;
+        background: $primary;
+        border-radius: 50%;
+        font-weight: $font-weight-bold;
+      }
+
+      .reviewer-name {
+        display: block;
+        font-weight: $font-weight-medium;
+      }
+
+      .review-date {
+        font-size: $font-size-xs;
+        color: $text-muted;
+      }
+    }
+  }
+
+  .review-title {
+    margin-bottom: $spacing-sm;
+  }
+
+  .review-content {
+    color: $text-secondary;
+    line-height: 1.6;
+    margin-bottom: $spacing-md;
+  }
+
+  .review-actions {
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-xs;
+      padding: $spacing-xs $spacing-sm;
+      background: transparent;
+      border: none;
+      color: $text-muted;
+      cursor: pointer;
+      border-radius: $radius-sm;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      &.liked {
+        color: $primary;
+      }
+
+      .material-icons {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.no-reviews {
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $text-muted;
+
+  .material-icons {
+    font-size: 48px;
+    margin-bottom: $spacing-md;
+  }
+}

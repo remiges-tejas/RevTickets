@@ -1,0 +1,263 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.payment-page {
+  padding: $spacing-2xl 0;
+  min-height: calc(100vh - $header-height);
+
+  h1 {
+    font-size: $font-size-2xl;
+    margin-bottom: $spacing-xl;
+  }
+}
+
+.payment-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-2xl;
+
+  @include lg {
+    grid-template-columns: 1fr 380px;
+  }
+}
+
+// Payment Methods
+.payment-methods {
+  background: $background-medium;
+  border-radius: $radius-xl;
+  overflow: hidden;
+}
+
+.method-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .method-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    padding: $spacing-lg;
+    background: none;
+    border: none;
+    color: $text-muted;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.active {
+      color: $primary;
+      border-bottom-color: $primary;
+    }
+
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+}
+
+.payment-form {
+  padding: $spacing-xl;
+}
+
+.form-group {
+  margin-bottom: $spacing-lg;
+
+  label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-sm;
+    color: $text-secondary;
+  }
+
+  input {
+    width: 100%;
+    padding: $spacing-md;
+    background: $background-light;
+    border: 2px solid transparent;
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-size: $font-size-base;
+
+    &::placeholder {
+      color: $text-muted;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+}
+
+.secure-badge {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  background: rgba($success, 0.1);
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $success;
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+// UPI
+.upi-apps {
+  margin-top: $spacing-xl;
+  text-align: center;
+
+  p {
+    color: $text-muted;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-md;
+  }
+
+  .app-icons {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+  }
+
+  .app-btn {
+    padding: $spacing-sm $spacing-lg;
+    background: $background-light;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-size: $font-size-sm;
+    cursor: pointer;
+
+    &:hover {
+      border-color: $primary;
+    }
+  }
+}
+
+// Net Banking
+.bank-list {
+  p {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-lg;
+  }
+
+  .banks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-md;
+
+    @include md {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .bank-btn {
+    padding: $spacing-md;
+    background: $background-light;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: $primary;
+      background: rgba($primary, 0.1);
+    }
+  }
+}
+
+// Order Summary
+.order-summary {
+  @include lg {
+    position: sticky;
+    top: calc($header-height + $spacing-xl);
+    height: fit-content;
+  }
+}
+
+.summary-card {
+  background: $background-medium;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+
+  h3 {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-xl;
+  }
+}
+
+.order-details {
+  margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-lg;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .detail-row {
+    @include flex-between;
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-sm;
+
+    span:first-child {
+      color: $text-muted;
+    }
+  }
+}
+
+.price-breakdown {
+  margin-bottom: $spacing-lg;
+
+  .price-row {
+    @include flex-between;
+    padding: $spacing-xs 0;
+    font-size: $font-size-sm;
+    color: $text-secondary;
+  }
+}
+
+.total-row {
+  @include flex-between;
+  padding: $spacing-lg 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: $spacing-md;
+  background: $primary;
+  border: none;
+  border-radius: $radius-md;
+  color: $text-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
