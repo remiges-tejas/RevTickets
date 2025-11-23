@@ -38,9 +38,13 @@ public class User {
 
     private String avatar;
 
-    @Column(name = "is_active")
+    // @Column(name = "is_active")
+    // @Builder.Default
+    // private boolean isActive = true;
+
     @Builder.Default
-    private boolean isActive = true;
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
